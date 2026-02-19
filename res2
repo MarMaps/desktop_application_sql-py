@@ -1,0 +1,409 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.15
+-- Dumped by pg_dump version 14.15
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: ssylki; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE ssylki WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'ru_RU.UTF-8';
+
+
+ALTER DATABASE ssylki OWNER TO postgres;
+
+\connect ssylki
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: kluch_slova; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.kluch_slova (
+    id integer NOT NULL,
+    id_ssylka integer,
+    slova text
+);
+
+
+ALTER TABLE public.kluch_slova OWNER TO postgres;
+
+--
+-- Name: kluch_slova_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.kluch_slova_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.kluch_slova_id_seq OWNER TO postgres;
+
+--
+-- Name: kluch_slova_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.kluch_slova_id_seq OWNED BY public.kluch_slova.id;
+
+
+--
+-- Name: poisk; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.poisk (
+    id integer NOT NULL,
+    id_razdela integer,
+    klucev_slova text
+);
+
+
+ALTER TABLE public.poisk OWNER TO postgres;
+
+--
+-- Name: poisk_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.poisk_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.poisk_id_seq OWNER TO postgres;
+
+--
+-- Name: poisk_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.poisk_id_seq OWNED BY public.poisk.id;
+
+
+--
+-- Name: razdely; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.razdely (
+    id integer NOT NULL,
+    id_ssylka integer,
+    nazvanie text
+);
+
+
+ALTER TABLE public.razdely OWNER TO postgres;
+
+--
+-- Name: razdely_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.razdely_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.razdely_id_seq OWNER TO postgres;
+
+--
+-- Name: razdely_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.razdely_id_seq OWNED BY public.razdely.id;
+
+
+--
+-- Name: ssylki; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ssylki (
+    id integer NOT NULL,
+    naimen text,
+    ssylka text,
+    opisanie text,
+    skrinshot text
+);
+
+
+ALTER TABLE public.ssylki OWNER TO postgres;
+
+--
+-- Name: ssylki_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.ssylki_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.ssylki_id_seq OWNER TO postgres;
+
+--
+-- Name: ssylki_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.ssylki_id_seq OWNED BY public.ssylki.id;
+
+
+--
+-- Name: zakladki; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.zakladki (
+    id integer NOT NULL,
+    id_ssylka integer
+);
+
+
+ALTER TABLE public.zakladki OWNER TO postgres;
+
+--
+-- Name: zakladki_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.zakladki_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.zakladki_id_seq OWNER TO postgres;
+
+--
+-- Name: zakladki_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.zakladki_id_seq OWNED BY public.zakladki.id;
+
+
+--
+-- Name: kluch_slova id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.kluch_slova ALTER COLUMN id SET DEFAULT nextval('public.kluch_slova_id_seq'::regclass);
+
+
+--
+-- Name: poisk id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.poisk ALTER COLUMN id SET DEFAULT nextval('public.poisk_id_seq'::regclass);
+
+
+--
+-- Name: razdely id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.razdely ALTER COLUMN id SET DEFAULT nextval('public.razdely_id_seq'::regclass);
+
+
+--
+-- Name: ssylki id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ssylki ALTER COLUMN id SET DEFAULT nextval('public.ssylki_id_seq'::regclass);
+
+
+--
+-- Name: zakladki id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.zakladki ALTER COLUMN id SET DEFAULT nextval('public.zakladki_id_seq'::regclass);
+
+
+--
+-- Data for Name: kluch_slova; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.kluch_slova (id, id_ssylka, slova) FROM stdin;
+1	1	браузер
+\.
+
+
+--
+-- Data for Name: poisk; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.poisk (id, id_razdela, klucev_slova) FROM stdin;
+\.
+
+
+--
+-- Data for Name: razdely; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.razdely (id, id_ssylka, nazvanie) FROM stdin;
+\.
+
+
+--
+-- Data for Name: ssylki; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.ssylki (id, naimen, ssylka, opisanie, skrinshot) FROM stdin;
+1	Яндекс	https://ya.ru/	\N	\N
+2	Яндекс Музыка	https://music.yandex.ru/	\N	\N
+\.
+
+
+--
+-- Data for Name: zakladki; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.zakladki (id, id_ssylka) FROM stdin;
+\.
+
+
+--
+-- Name: kluch_slova_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.kluch_slova_id_seq', 1, true);
+
+
+--
+-- Name: poisk_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.poisk_id_seq', 1, false);
+
+
+--
+-- Name: razdely_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.razdely_id_seq', 1, false);
+
+
+--
+-- Name: ssylki_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.ssylki_id_seq', 2, true);
+
+
+--
+-- Name: zakladki_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.zakladki_id_seq', 1, false);
+
+
+--
+-- Name: kluch_slova kluch_slova_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.kluch_slova
+    ADD CONSTRAINT kluch_slova_pk PRIMARY KEY (id);
+
+
+--
+-- Name: poisk poisk_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.poisk
+    ADD CONSTRAINT poisk_pk PRIMARY KEY (id);
+
+
+--
+-- Name: razdely razdely_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.razdely
+    ADD CONSTRAINT razdely_pk PRIMARY KEY (id);
+
+
+--
+-- Name: ssylki ssylki_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ssylki
+    ADD CONSTRAINT ssylki_pk PRIMARY KEY (id);
+
+
+--
+-- Name: zakladki zakladki_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.zakladki
+    ADD CONSTRAINT zakladki_pk PRIMARY KEY (id);
+
+
+--
+-- Name: kluch_slova kluch_slova_ssylki_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.kluch_slova
+    ADD CONSTRAINT kluch_slova_ssylki_fk FOREIGN KEY (id_ssylka) REFERENCES public.ssylki(id);
+
+
+--
+-- Name: poisk poisk_razdely_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.poisk
+    ADD CONSTRAINT poisk_razdely_fk FOREIGN KEY (id_razdela) REFERENCES public.razdely(id);
+
+
+--
+-- Name: razdely razdely_ssylki_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.razdely
+    ADD CONSTRAINT razdely_ssylki_fk FOREIGN KEY (id_ssylka) REFERENCES public.ssylki(id);
+
+
+--
+-- Name: zakladki zakladki_ssylki_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.zakladki
+    ADD CONSTRAINT zakladki_ssylki_fk FOREIGN KEY (id_ssylka) REFERENCES public.ssylki(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
