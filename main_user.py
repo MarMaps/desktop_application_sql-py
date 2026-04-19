@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 import sys
 import io
 from PyQt5.QtWidgets import (QApplication, QWidget, QTableWidget, QTableWidgetItem, QVBoxLayout,
@@ -118,23 +117,3 @@ class Window(QWidget):
                 self.table.setItem(row, 3, QTableWidgetItem('Нет данных'))
 
             row += 1
-
-
-# подключение к БД
-if not QSqlDatabase.contains('QPSQL'):
-    db = QSqlDatabase.addDatabase('QPSQL')
-    db.setHostName('localhost')
-    db.setDatabaseName('ssylki')
-    db.setPort(5432)
-    db.setUserName('postgres')
-    db.setPassword('123456')
-
-    if not db.open():
-        print('Ошибка подключения к базе данных')
-
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    win = Window()
-    win.show()
-    sys.exit(app.exec())

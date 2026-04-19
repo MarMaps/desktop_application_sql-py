@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 import sys
 import io
 from PyQt5.QtWidgets import (QApplication, QWidget, QTableWidget, QTableWidgetItem, QVBoxLayout,
@@ -12,11 +11,12 @@ from add_razdel import AddRazdel
 from add_slovo import AddSlovo
 from PyQt5.QtWidgets import QSizePolicy
 from regist import RegistrationWindow
-
+from add_zakladki import AddZakladkiWindow
 
 class Window(QWidget):
-    def __init__(self):
+    def __init__(self, id_polz):
         super().__init__()
+        self.id_polz = id_polz
         self.setWindowTitle('Ссылки')
         self.setGeometry(300, 300, 1700, 1000)
 
@@ -33,6 +33,7 @@ class Window(QWidget):
         self.add_razdel = QPushButton('+ Добавить раздел')
         self.add_slovo = QPushButton('+ Добавить ключевое слово')
         self.search_button = QPushButton('Поиск')
+        self.zakladki_button = QPushButton('Добавить в закладки')
         self.refresh_button = QPushButton('Обновить таблицу')
         self.exit_button = QPushButton('Выход')
 
@@ -42,6 +43,7 @@ class Window(QWidget):
         top_panel_layout.addWidget(self.search_button)
         top_panel_layout.addWidget(self.refresh_button)
         top_panel_layout.addStretch()
+        top_panel_layout.addWidget(self.zakladki_button)
         top_panel_layout.addWidget(self.exit_button)
 
         self.exit_button.clicked.connect(self.close)
@@ -49,6 +51,7 @@ class Window(QWidget):
         self.main_layout.addWidget(self.table)
         self.setLayout(self.main_layout)
 
+        self.zakladki_button.clicked.connect(self.open_zakladki_window)
         self.add_button.clicked.connect(self.open_add_window)
         self.search_button.clicked.connect(self.open_search_window)
         self.add_razdel.clicked.connect(self.open_add_razdel)
@@ -68,6 +71,10 @@ class Window(QWidget):
         self.search_window = SearchWindow()
         self.search_window.show()
 
+    def open_zakladki_window(self):
+        self.zakladki_window = AddZakladkiWindow(self.id_polz)
+        self.zakladki_window.show()
+    
     def open_add_razdel(self):
         self.add_razdel = AddRazdel()
         self.add_razdel.show()
@@ -122,21 +129,3 @@ class Window(QWidget):
                 self.table.setItem(row, 3, QTableWidgetItem('Нет данных'))
 
             row += 1
-
-
-if __name__ == '__main__':
-    # подключение к БД и запуск
-    db = QSqlDatabase.addDatabase('QPSQL')
-    db.setHostName('localhost')
-    db.setDatabaseName('ssylki')
-    db.setPort(5432)
-    db.setUserName('postgres')
-    db.setPassword('123456')
-
-    if not db.open():
-        print('Ошибка подключения к базе данных')
-
-    app = QApplication(sys.argv)
-    win = Window()
-    win.show()
-    sys.exit(app.exec())

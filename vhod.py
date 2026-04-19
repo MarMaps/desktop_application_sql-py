@@ -5,8 +5,9 @@ import sys
 
 
 class VhodWindow(QWidget):
-    def __init__(self):
+    def __init__(self, main_window=None):
         super().__init__()
+        self.main_window = main_window
         self.setWindowTitle('Вход')
         self.setGeometry(400, 300, 300, 150)
 
@@ -60,13 +61,19 @@ class VhodWindow(QWidget):
                 if yr_dopuska == 'user':
                     QMessageBox.information(self, 'Успех', 'Добро пожаловать!')
                     self.close()
-                    self.user_window = main_user.Window(id_polz)
-                    self.user_window.show()
+                    if self.main_window:
+                        self.main_window.update_role(id_polz, 'user')
+                    else:
+                        self.user_window = main_user.Window(id_polz)
+                        self.user_window.show()
                 elif yr_dopuska == 'admin':
                     QMessageBox.information(self, 'Администратор', 'Добро пожаловать!')
                     self.close()
-                    self.admin_window = main_admin.Window()
-                    self.admin_window.show()
+                    if self.main_window:
+                        self.main_window.update_role(id_polz, 'admin')
+                    else:
+                        self.admin_window = main_admin.Window()
+                        self.admin_window.show()
                 else:
                     QMessageBox.warning(self, 'Ошибка', f'У вас нет доступа. Уровень допуска: {yr_dopuska}')
             else:
