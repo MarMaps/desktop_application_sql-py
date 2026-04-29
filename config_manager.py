@@ -64,19 +64,6 @@ class ConfigManager:
             'password': self.config.get('database', 'password')
         }
 
-    def set_theme(self, theme):
-        """Сохраняет тему (light или dark)"""
-        if not self.config.has_section('appearance'):
-            self.config.add_section('appearance')
-        self.config.set('appearance', 'theme', theme)
-        self.save()
-
-    def get_theme(self):
-        """Возвращает тему (по умолчанию light)"""
-        if not self.config.has_section('appearance'):
-            return 'light'
-        return self.config.get('appearance', 'theme', fallback='light')
-
     def has_db_connection(self):
         """Проверяет, сохранены ли данные подключения к БД"""
         return self.config.has_section('database')

@@ -38,6 +38,14 @@ class RegistrationWindow(QWidget):
             return
 
         query = QSqlQuery()
+        query.prepare("select id from polzovateli where login = :login")
+        query.bindValue(':login', login)
+        query.exec_()
+        
+        if query.next():
+            QMessageBox.warning(self, 'Ошибка', 'Такой логин уже существует!')
+            return
+
         sql = """insert into polzovateli (login, parol, yr_dopuska)
             values (:login, :parol, 'user')"""
 

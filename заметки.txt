@@ -1,6 +1,3 @@
-сессия 24.03.26: Для продолжения этой сессии, выполните qwen --resume 3b521673-7ae0-4588-b95d-d4adabfd2137
+создание бэкапа win10: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe" -U postgres -d ssylki > backup_file.sql
 
-сессия 25.03: qwen --resume 8e0aa97b-e506-4d2a-82fc-c6fd9c56b846
-
-
-создание бэкапа вин10: C:\Program Files\PostgreSQL\17\bin\pg_dump.exe" -U postgres -d ssylki > backup_file.sql
+~/.config/links_app/

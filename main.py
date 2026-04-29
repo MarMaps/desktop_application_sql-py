@@ -1,146 +1,3 @@
-# #!/usr/bin/python3
-# import sys
-# import io
-# from PyQt5.QtWidgets import (QApplication, QWidget, QTableWidget, QTableWidgetItem, QVBoxLayout,
-#                              QLabel, QPushButton, QHBoxLayout)
-# from PyQt5.QtSql import QSqlDatabase, QSqlQuery
-# from PyQt5.QtGui import QPixmap
-# from PyQt5.QtCore import Qt
-# from add_link import AddLinkWindow
-# from search_window import SearchWindow
-# from add_razdel import AddRazdel
-# from add_slovo import AddSlovo
-# from PyQt5.QtWidgets import QSizePolicy
-# from regist import RegistrationWindow
-# from vhod import VhodWindow
-
-
-# class Window(QWidget):
-#     def __init__(self):
-#         super().__init__()
-#         self.setWindowTitle('Ссылки')
-#         self.setGeometry(300, 300, 1700, 1000)
-
-#         self.table = QTableWidget()
-#         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
-#         self.table.verticalHeader().hide()
-#         self.table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-
-#         self.main_layout = QVBoxLayout()
-#         self.main_layout.setAlignment(Qt.AlignTop)
-
-#         top_panel_layout = QHBoxLayout()
-#         #self.add_button = QPushButton('+ Добавить ссылку')
-#         #self.add_razdel = QPushButton('+ Добавить раздел')
-#         #self.add_slovo = QPushButton('+ Добавить ключевое слово')
-#         self.search_button = QPushButton('Поиск')
-#         #self.refresh_button = QPushButton('Обновить таблицу')
-#         self.reg_button = QPushButton('Зарегистрироваться')
-#         self.vhod_button = QPushButton('Вход')
-
-#         #top_panel_layout.addWidget(self.add_button)
-#         #top_panel_layout.addWidget(self.add_razdel)
-#         #top_panel_layout.addWidget(self.add_slovo)
-#         top_panel_layout.addWidget(self.search_button)
-#         #top_panel_layout.addWidget(self.refresh_button)
-#         top_panel_layout.addStretch()
-#         top_panel_layout.addWidget(self.reg_button)
-#         top_panel_layout.addWidget(self.vhod_button)
-#         self.main_layout.addLayout(top_panel_layout)
-#         self.main_layout.addWidget(self.table)
-#         self.setLayout(self.main_layout)
-
-#         #self.add_button.clicked.connect(self.open_add_window)
-#         self.search_button.clicked.connect(self.open_search_window)
-#         #self.add_razdel.clicked.connect(self.open_add_razdel)
-#         #self.add_slovo.clicked.connect(self.open_add_slovo)
-#         #self.refresh_button.clicked.connect(self.load_data)
-#         self.reg_button.clicked.connect(self.open_registration_window)
-#         self.vhod_button.clicked.connect(self.open_vhod_window)
-
-#         self.load_data()
-    
-#     def open_add_window(self):
-#         self.add_window = AddLinkWindow()
-#         self.add_window.show()
-#         self.add_window.destroyed.connect(self.load_data)
-
-#     def open_search_window(self):
-#         self.search_window = SearchWindow()
-#         self.search_window.show()
-
-#     def open_add_razdel(self):
-#         self.add_razdel = AddRazdel()
-#         self.add_razdel.show()
-#         self.add_razdel.destroyed.connect(self.load_data)
-
-#     def open_add_slovo(self):
-#         self.add_slovo_window = AddSlovo()
-#         self.add_slovo_window.show()
-#         self.add_slovo_window.destroyed.connect(self.load_data)
-
-#     def open_registration_window(self):
-#         self.reg_window = RegistrationWindow()
-#         self.reg_window.show()
-
-#     def open_vhod_window(self):
-#         self.vhod_window = VhodWindow()
-#         self.vhod_window.show()
-
-#     def load_data(self):
-#         self.table.setRowCount(0)
-#         q = QSqlQuery()
-#         q.exec_('select naimen, ssylka, opisanie, skrinshot from ssylki_tab')
-
-#         self.table.setColumnCount(4)
-#         self.table.setHorizontalHeaderLabels(['Название', 'Ссылка', 'Описание', 'Снимок'])
-
-#         row = 0
-#         while q.next():
-#             self.table.insertRow(row)
-
-#             self.table.setItem(row, 0, QTableWidgetItem(str(q.value(0))))
-#             self.table.setColumnWidth(0, 150)
-#             self.table.setItem(row, 1, QTableWidgetItem(str(q.value(1))))
-#             self.table.setColumnWidth(1, 180)
-#             self.table.setItem(row, 2, QTableWidgetItem(str(q.value(2))))
-#             self.table.setColumnWidth(2, 400)
-
-#             img_data = q.value(3)
-#             if img_data:
-#                 pixmap = QPixmap()
-#                 if pixmap.loadFromData(img_data):
-#                     pixmap = pixmap.scaled(680, 280, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-#                     label = QLabel()
-#                     label.setPixmap(pixmap)
-#                     label.setAlignment(Qt.AlignCenter)
-#                     self.table.setRowHeight(row, 300)
-#                     self.table.setColumnWidth(3, 700)
-#                     self.table.setCellWidget(row, 3, label)
-#                 else:
-#                     self.table.setItem(row, 3, QTableWidgetItem('Ошибка конвертации'))
-#             else:
-#                 self.table.setItem(row, 3, QTableWidgetItem('Нет данных'))
-
-#             row += 1
-
-
-# # подключение к БД и запуск
-# db = QSqlDatabase.addDatabase('QPSQL')
-# db.setHostName('localhost')
-# db.setDatabaseName('ssylki')
-# db.setPort(5432)
-# db.setUserName('postgres')
-# db.setPassword('123456')
-
-# if not db.open():
-#     print('Ошибка подключения к базе данных')
-
-# app = QApplication(sys.argv)
-# win = Window()
-# win.show()
-# sys.exit(app.exec())
-#!/usr/bin/python3
 import sys
 import os
 from PyQt5.QtWidgets import (QApplication, QWidget, QTableWidget, QTableWidgetItem, QVBoxLayout,
@@ -152,7 +9,6 @@ from PyQt5.QtWidgets import QSizePolicy
 from bd_vhod import DatabaseConfigWindow
 from PyQt5.QtWidgets import QApplication, QDialog
 from config_manager import ConfigManager
-from theme_manager import ThemeManager
 
 from add_link import AddLinkWindow
 from search_window import SearchWindow
@@ -183,7 +39,7 @@ class Window(QWidget):
         self.id_polz = id_polz
         self.role = role
         self.config_manager = config_manager
-        self.theme_manager = ThemeManager(config_manager) if config_manager else None
+        self.showing_zakladki = False
         
         self.setWindowTitle('Ссылки')
         self.setGeometry(300, 300, 1700, 1000)
@@ -217,10 +73,6 @@ class Window(QWidget):
         self.search_button = QPushButton('Поиск')
         self.search_button.clicked.connect(self.open_search_window)
         self.top_panel_layout.addWidget(self.search_button)
-        
-        self.theme_button = QPushButton('Сменить тему')
-        self.theme_button.clicked.connect(self.toggle_theme)
-        self.top_panel_layout.addWidget(self.theme_button)
 
         if self.role == 'admin':
             self.add_button = QPushButton('+ Добавить ссылку')
@@ -242,10 +94,28 @@ class Window(QWidget):
             self.zakladki_button.clicked.connect(self.open_zakladki_window)
             self.top_panel_layout.addWidget(self.zakladki_button)
 
+            self.moi_zakladki_button = QPushButton('Мои закладки')
+            self.moi_zakladki_button.clicked.connect(self.show_moi_zakladki)
+            self.top_panel_layout.addWidget(self.moi_zakladki_button)
+
+            if self.showing_zakladki:
+                self.back_button = QPushButton('Назад к таблице')
+                self.back_button.clicked.connect(self.show_back_to_table)
+                self.top_panel_layout.addWidget(self.back_button)
+
         elif self.role == 'user':
             self.zakladki_button = QPushButton('Добавить в закладки')
             self.zakladki_button.clicked.connect(self.open_zakladki_window)
             self.top_panel_layout.addWidget(self.zakladki_button)
+
+            self.moi_zakladki_button = QPushButton('Мои закладки')
+            self.moi_zakladki_button.clicked.connect(self.show_moi_zakladki)
+            self.top_panel_layout.addWidget(self.moi_zakladki_button)
+
+            if self.showing_zakladki:
+                self.back_button = QPushButton('Назад к таблице')
+                self.back_button.clicked.connect(self.show_back_to_table)
+                self.top_panel_layout.addWidget(self.back_button)
 
         else:
             self.reg_button = QPushButton('Зарегистрироваться')
@@ -267,6 +137,7 @@ class Window(QWidget):
     def update_role(self, id_polz, role):
         self.id_polz = id_polz
         self.role = role
+        self.showing_zakladki = False
         self.setup_buttons()
         self.load_data()
 
@@ -277,6 +148,7 @@ class Window(QWidget):
     def logout(self):
         self.id_polz = None
         self.role = None
+        self.showing_zakladki = False
         self.setup_buttons()
         self.load_data()
     
@@ -355,6 +227,63 @@ class Window(QWidget):
                 self.table.setItem(row, 3, QTableWidgetItem('Нет данных'))
             row += 1
 
+    def show_moi_zakladki(self):
+        if not self.id_polz:
+            QMessageBox.warning(self, 'Ошибка', 'Необходимо войти в систему!')
+            return
+
+        self.table.setRowCount(0)
+        q = QSqlQuery()
+        
+        sql = """select s.naimen, s.ssylka, s.opisanie, s.skrinshot 
+                from zakladki z
+                join ssylki_tab s on z.id_ssylka = s.id
+                where z.id_polz = :id_polz"""
+        
+        q.prepare(sql)
+        q.bindValue(':id_polz', self.id_polz)
+        q.exec_()
+
+        self.table.setColumnCount(4)
+        self.table.setHorizontalHeaderLabels(['Название', 'Ссылка', 'Описание', 'Снимок'])
+
+        row = 0
+        while q.next():
+            self.table.insertRow(row)
+            self.table.setItem(row, 0, QTableWidgetItem(str(q.value(0))))
+            self.table.setColumnWidth(0, 150)
+            self.table.setItem(row, 1, QTableWidgetItem(str(q.value(1))))
+            self.table.setColumnWidth(1, 180)
+            self.table.setItem(row, 2, QTableWidgetItem(str(q.value(2))))
+            self.table.setColumnWidth(2, 400)
+
+            img_data = q.value(3)
+            if img_data:
+                pixmap = QPixmap()
+                if pixmap.loadFromData(img_data):
+                    pixmap = pixmap.scaled(680, 280, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+                    label = QLabel()
+                    label.setPixmap(pixmap)
+                    label.setAlignment(Qt.AlignCenter)
+                    self.table.setRowHeight(row, 300)
+                    self.table.setColumnWidth(3, 700)
+                    self.table.setCellWidget(row, 3, label)
+                else:
+                    self.table.setItem(row, 3, QTableWidgetItem('Ошибка конвертации'))
+            else:
+                self.table.setItem(row, 3, QTableWidgetItem('Нет данных'))
+            row += 1
+
+        self.showing_zakladki = True
+        self.setup_buttons()
+        self.update()
+
+    def show_back_to_table(self):
+        self.showing_zakladki = False
+        self.setup_buttons()
+        self.update()
+        self.load_data()
+
 def setup_full_database(db_info):
     """Создаёт БД ssylki и все таблицы, если их нет"""
     
@@ -400,10 +329,6 @@ def setup_full_database(db_info):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     
-    config_manager = ConfigManager("default")
-    theme_manager = ThemeManager(config_manager)
-    theme_manager.apply_theme()
-    
     db_dialog = DatabaseConfigWindow("default")
     if db_dialog.exec_() != QDialog.Accepted:
         sys.exit(0)
@@ -412,7 +337,7 @@ if __name__ == '__main__':
         QMessageBox.critical(None, 'Ошибка', 'Не удалось инициализировать базу данных.')
         sys.exit(1)
         
-    win = Window(config_manager=config_manager) 
+    win = Window(config_manager=ConfigManager) 
     win.show()
     sys.exit(app.exec())
 
